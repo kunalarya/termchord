@@ -1,0 +1,27 @@
+# general things to ignore
+build/
+dist/
+*.egg-info/
+*.egg
+*.py[cod]
+__pycache__/
+*.so
+*.dylib
+*~
+*.swp
+_ignore/
+
+# due to using tox and pytest
+.tox
+.cache
+.venv-3.*/
+
+
+# CUDD intermediate files
+
+*.lo
+*.o
+*.a
+.deps
+.libs
+.dirstamp
