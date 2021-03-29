@@ -1,0 +1,4 @@
+# Please pin major and minor version, and unpin
+# revision.
+
+pytest==6.2.2

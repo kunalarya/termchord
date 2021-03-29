@@ -1,4 +1,4 @@
-from _main import main
+import _main
 
 if __name__ == "__main__":
-    main()
+    _main.main()
