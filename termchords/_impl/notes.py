@@ -1,5 +1,5 @@
 import enum
-from typing import Dict, Tuple
+from typing import Dict, Set, Tuple
 
 
 class Accidental(enum.Enum):
@@ -7,26 +7,28 @@ class Accidental(enum.Enum):
     Sharp = enum.auto()
     Flat = enum.auto()
 
+    def to_str(self) -> str:
+        if self == Accidental.Natural:
+            return ""
+        elif self == Accidental.Sharp:
+            return "#"
+        elif self == Accidental.Flat:
+            return "b"
+        raise ValueError(str(self))
+
 
 def notes() -> Dict[int, "_Note"]:
     if not _Note._all_notes:
         # Create all notes.
-        note_number = 0
-        for i in range(7):
-            note_chr = chr(ord("A") + i)
-            _ = _Note(note_number, note_chr)
+        for octave in range(8):
+            for i in range(7):
+                note_chr = chr(ord("A") + i)
+                _ = _Note(octave, note_chr)
 
-            # Add sharps and flats.
-            _ = _Note(note_number, note_chr, Accidental.Sharp)
-            _ = _Note(note_number, note_chr, Accidental.Flat)
+                # Add sharps and flats.
+                _ = _Note(octave, note_chr, Accidental.Sharp)
+                _ = _Note(octave, note_chr, Accidental.Flat)
 
-            note_number += 1
-            if note_chr not in ("B", "E"):
-                # account for sharps.
-                note_number += 1
-            if note_chr not in ("C", "F"):
-                # account for flats.
-                note_number += 1
     return _Note._all_notes
 
 
@@ -42,7 +44,7 @@ class _Note:
     """
 
     _all_notes: Dict[Tuple[int, int, Accidental], "_Note"] = {}
-    _by_num: Dict[int, "_Note"] = {}
+    _by_num: Dict[int, Set["_Note"]] = {}
 
     _rel = {
         ("C", Accidental.Flat): -1,
@@ -71,13 +73,16 @@ class _Note:
     def __new__(
         cls, octave: int, note: str, accidental: Accidental = Accidental.Natural
     ):
-        if (note, accidental) not in cls._all_notes:
+        key = (octave, note, accidental)
+        if key not in cls._all_notes:
             note_num = _to_num(octave, note, accidental)
             inst = super().__new__(cls)
-            cls._all_notes[octave, note, accidental] = inst
-            cls._by_num[note_num] = inst
+            cls._all_notes[key] = inst
+            if not note_num in cls._by_num:
+                cls._by_num[note_num] = set()
+            cls._by_num[note_num].add(inst)
 
-        return cls._all_notes[octave, note, accidental]
+        return cls._all_notes[key]
 
     def __init__(
         self,
@@ -93,3 +98,6 @@ class _Note:
     def minor3(self) -> "_Note":
 
         return self.note_num + 4
+
+    def __repr__(self) -> str:
+        return f"{self.note}{self.accidental.to_str()}{self.octave}"
