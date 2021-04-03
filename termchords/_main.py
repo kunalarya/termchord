@@ -98,12 +98,15 @@ def draw_octave(stdscr, r: int, c: int, first: bool, last: bool) -> None:
         stdscr.addstr(r + 4, last_c, "│")
         stdscr.addstr(r + 5, last_c, "┴")
 
+    #                             0  1  2 3   4 5  6   7 8  9  10 11
+    #                             C Db  D D# E  F  F# G  G# A  A# B
+    #                               C#  D Eb Fb F  Gb G  Ab A  Bb Cb
     stdscr.addstr(r + 0, c + 1, "──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬")
     stdscr.addstr(r + 1, c + 1, "  │  │  │  │  │  │  │  │  │  │  │  │")
     stdscr.addstr(r + 2, c + 1, "  │  │  │  │  │  │  │  │  │  │  │  │")
-    stdscr.addstr(r + 3, c + 1, "  └┬─┘  └┬─┘  └┬─┘  │  └┬─┘  └┬─┘  │")
-    stdscr.addstr(r + 4, c + 1, "   │     │     │    │   │     │    │")
-    stdscr.addstr(r + 5, c + 1, "───┴─────┴─────┴────┴───┴─────┴────┴")
+    stdscr.addstr(r + 3, c + 1, "  └┬─┘  └┬─┘  │  └┬─┘  └┬─┘  └┬─┘  │")
+    stdscr.addstr(r + 4, c + 1, "   │     │    │   │     │     │    │")
+    stdscr.addstr(r + 5, c + 1, "───┴─────┴────┴───┴─────┴─────┴────┴")
 
 
 def main():
