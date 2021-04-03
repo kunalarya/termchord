@@ -32,10 +32,6 @@ def notes() -> Dict[int, "_Note"]:
     return _Note._all_notes
 
 
-def _to_num(octave: int, note: str, accidental: Accidental) -> int:
-    return (octave * 12) + _Note._rel[note, accidental]
-
-
 class _Note:
     """Represents a cached note.
 
@@ -101,3 +97,12 @@ class _Note:
 
     def __repr__(self) -> str:
         return f"{self.note}{self.accidental.to_str()}{self.octave}"
+
+
+def _to_num(octave: int, note: str, accidental: Accidental) -> int:
+    return (octave * 12) + _Note._rel[note, accidental]
+
+
+def note_above(note: str, amount: int) -> str:
+    """Find the note names above, e.g. c + 3 = e"""
+    return chr(ord("A") + ((ord(note) - ord("A")) + (amount - 1)) % 7)
